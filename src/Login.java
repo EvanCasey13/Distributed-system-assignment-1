@@ -41,17 +41,16 @@ public static void main(String[] args){
 	 pstmt.setString(1, id);
 	 ResultSet rs = pstmt.executeQuery();
      if (rs.next()) {
-    	 
     	 stud_id = rs.getInt("STUD_ID");
     	 name=rs.getString("FNAME");
     	 surname=rs.getString("SNAME");
     	 tot_req=rs.getInt("TOT_REQ");
     	 tot_req++;
-    	 PreparedStatement ps = con.prepareStatement("UPDATE students SET TOT_REQ=? WHERE STUD_ID=?");
-    	 ps.setInt(1, stud_id);
-    	 ps.setInt(2, tot_req);
+    	 String query = "UPDATE students SET TOT_REQ=? WHERE STUD_ID=?";
+    	 PreparedStatement ps = con.prepareStatement(query);
+    	 ps.setInt(1, tot_req);
+    	 ps.setInt(2, stud_id);
          ps.executeUpdate();
-    	
     	 
     	 AreaOfCircle ac = new AreaOfCircle();
     	 ac.setTitle("Area of a circle" + stud_id);
