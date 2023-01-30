@@ -41,13 +41,14 @@ public class Server extends JFrame
 				s = ss.accept(); 
 				
 				System.out.println("A new client is connected : " + s); 
-				
+				InetAddress inetAddress = s.getInetAddress();
 				// obtaining input and out streams 
 				DataInputStream dis = new DataInputStream(s.getInputStream()); 
 				DataOutputStream dos = new DataOutputStream(s.getOutputStream()); 
 				 
 				System.out.println("Assigning new thread for this client"); 
-
+				System.out.println("Client's host name is " + inetAddress.getHostName());
+				System.out.println("Client's IP Address is " + inetAddress.getHostAddress());
 				// create a new thread object 
 				Thread t = new StudentHandler(s, dis, dos); 
 				  

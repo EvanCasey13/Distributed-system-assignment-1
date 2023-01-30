@@ -15,6 +15,9 @@ public class AreaOfCircle extends JFrame {
 
   // Text area to display contents
   private JTextArea jta = new JTextArea();
+  
+  private JButton jb = new JButton("Send");
+  private JButton jb1 = new JButton("Exit");
 
   // IO streams
   private DataOutputStream toServer;
@@ -28,7 +31,8 @@ public class AreaOfCircle extends JFrame {
     // Panel p to hold the label and text field
     JPanel p = new JPanel();
     p.setLayout(new BorderLayout());
-    p.add(new JLabel("Enter radius"), BorderLayout.WEST);
+    p.add(jb, BorderLayout.WEST);
+    p.add(jb1, BorderLayout.EAST);
     p.add(jtf, BorderLayout.CENTER);
     jtf.setHorizontalAlignment(JTextField.RIGHT);
 
@@ -42,6 +46,17 @@ public class AreaOfCircle extends JFrame {
     setSize(500, 300);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setVisible(true); // It is necessary to show the frame here!
+    
+    jb.addActionListener(new Listener()); // Register send listener
+    
+    ActionListener ExitListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.exit(0);
+        }
+    };
+    
+    jb1.addActionListener(ExitListener); // Register exit listener
 
     try {
       // Create a socket to connect to the server
