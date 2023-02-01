@@ -53,9 +53,9 @@ public static void main(String[] args){
          ps.executeUpdate();
     	 
     	 AreaOfCircle ac = new AreaOfCircle();
-    	 ac.setTitle("Area of a circle" + stud_id);
+    	 ac.setTitle("Area of a circle");
     	 ac.setVisible(true);
-         jta.setText("Welcome" + " " + name + " " + surname +  + tot_req +" " + ", You are now connected to the Server." + " " + "Please enter the Radius of the Circle");
+         jta.setText("Welcome" + " " + name + " " + surname + " " + ", You are now connected to the Server." + " " + "Please enter the Radius of the Circle");
      } else {
          // Display to the text area
          jta.setText("Sorry" + " " + id + "." + " " + "You are not a registered student. Try again or Exit");

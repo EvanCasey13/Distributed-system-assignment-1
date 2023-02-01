@@ -20,7 +20,7 @@ public class Server extends JFrame
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTextArea jta = new JTextArea();
+	private static JTextArea jta = new JTextArea("");
 	
 	public static void main(String[] args) throws IOException 
 	{ 
@@ -40,15 +40,15 @@ public class Server extends JFrame
 				// socket object to receive incoming client requests 
 				s = ss.accept(); 
 				
-				System.out.println("A new client is connected : " + s); 
+				jta.append("A new client is connected : " + s + "\n"); 
 				InetAddress inetAddress = s.getInetAddress();
 				// obtaining input and out streams 
 				DataInputStream dis = new DataInputStream(s.getInputStream()); 
 				DataOutputStream dos = new DataOutputStream(s.getOutputStream()); 
 				 
-				System.out.println("Assigning new thread for this client"); 
-				System.out.println("Client's host name is " + inetAddress.getHostName());
-				System.out.println("Client's IP Address is " + inetAddress.getHostAddress());
+				jta.append("Assigning new thread for this client \n"); 
+				jta.append("Client's host name is " + inetAddress.getHostName() + "\n");
+				jta.append("Client's host address is " + inetAddress.getHostAddress() + "\n");
 				// create a new thread object 
 				Thread t = new StudentHandler(s, dis, dos); 
 				  
