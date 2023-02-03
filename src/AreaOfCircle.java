@@ -19,10 +19,6 @@ public class AreaOfCircle extends JFrame {
   private JButton jb = new JButton("Send");
   private JButton jb1 = new JButton("Exit");
 
-  // IO streams
-  private DataOutputStream toServer;
-  private DataInputStream fromServer;
-
   public static void main(String[] args) {
     new AreaOfCircle();
   }
@@ -40,14 +36,10 @@ public class AreaOfCircle extends JFrame {
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(jta), BorderLayout.CENTER);
 
-    jtf.addActionListener(new Listener()); // Register listener
-
     setTitle("Client");
     setSize(500, 300);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setVisible(true); // It is necessary to show the frame here!
-    
-    jb.addActionListener(new Listener()); // Register send listener
     
     ActionListener ExitListener = new ActionListener() {
         @Override
@@ -57,46 +49,34 @@ public class AreaOfCircle extends JFrame {
     };
     
     jb1.addActionListener(ExitListener); // Register exit listener
+    
+    jb.addActionListener(new ActionListener() {
+		 public void actionPerformed(ActionEvent arg0) {
+				try {
+					
+					Socket socket = new Socket("localhost", 8000);
+					 
+					// obtaining input and out streams 
+					DataInputStream dis = new DataInputStream(socket.getInputStream());
+					DataOutputStream dos = new DataOutputStream(socket.getOutputStream()); 
+						
+					// Get the radius from the text field
+			        double radius = Double.parseDouble(jtf.getText().trim());
 
-    try {
-      // Create a socket to connect to the server
-      Socket socket = new Socket("localhost", 8000);
-      // Socket socket = new Socket("130.254.204.36", 8000);
-      // Socket socket = new Socket("drake.Armstrong.edu", 8000);
+			        // Send the radius to the server
+			        dos.writeDouble(radius);
+			        dos.flush();
 
-      // Create an input stream to receive data from the server
-      fromServer = new DataInputStream(socket.getInputStream());
+			        // Get area from the server
+			        double area = dis.readDouble();
 
-      // Create an output stream to send data to the server
-      toServer = new DataOutputStream(socket.getOutputStream());
-    }
-    catch (IOException ex) {
-      jta.append(ex.toString() + '\n');
-    }
-  }
-
-  private class Listener implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      try {
-        // Get the radius from the text field
-        double radius = Double.parseDouble(jtf.getText().trim());
-
-        // Send the radius to the server
-        toServer.writeDouble(radius);
-        toServer.flush();
-
-        // Get area from the server
-        double area = fromServer.readDouble();
-
-        // Display to the text area
-        jta.append("Radius is " + radius + "\n");
-        jta.append("Area received from the server is "
-          + area + '\n');
-      }
-      catch (IOException ex) {
-        System.err.println(ex);
-      }
-    }
+			        // Display to the text area
+			        jta.append("Radius is " + radius + "\n");
+			        jta.append("Area received from the server is "
+			          + area + '\n');
+				} catch (IOException ex) {
+			        System.err.println(ex);
+				} 	
+		 }});
   }
 }
