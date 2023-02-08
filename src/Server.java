@@ -34,11 +34,13 @@ public class Server extends JFrame
 	 */
 	private static final long serialVersionUID = 1L;
 	private static JTextArea jta = new JTextArea("");
+	private static JButton jbExit = new JButton("Exit");
 	public static ResultSet rs;
 	public static String name="", surname="";
 	public static Connection con;
 	public static Statement st;
 	public static int tot_req=0, stud_id=0;
+	public static JButton jb1 = new JButton("Exit");
 	
 	public static void main(String[] args) throws IOException 
 	{ 
@@ -57,17 +59,28 @@ public class Server extends JFrame
 		JLabel labell = new JLabel("STUD_ID: ");
 		JTextField textl=new JTextField(10);
 		JButton b1= new JButton("Login");
+		JButton b2= new JButton("Exit");
 		
 		JPanel p=new JPanel(new GridLayout(5,5));
 		 p.add(labell);
 		 p.add(textl);
 		 p.add(b1);
+		 p.add(b2);
 		
 		 f.add(p);
 		 f.setVisible(true);
 		 f.pack();
 		 f.setSize(500, 300);
 		 
+		   ActionListener ExitListener = new ActionListener() {
+		        @Override
+		        public void actionPerformed(ActionEvent e) {
+		            System.exit(0);
+		        }
+		    };
+		    
+		 b2.addActionListener(ExitListener); // Register exit listener
+		    
 		 b1.addActionListener(new ActionListener() {
 			 public void actionPerformed(ActionEvent arg0) {
 			 try {
@@ -136,7 +149,6 @@ public class Server extends JFrame
 	    // Place text area on the frame
 	    setLayout(new BorderLayout());
 	    add(new JScrollPane(jta), BorderLayout.CENTER);
-
 	    setTitle("Server");
 	    setSize(500, 300);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
