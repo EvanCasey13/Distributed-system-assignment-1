@@ -57,12 +57,12 @@ public class Server extends JFrame
 		JLabel labell = new JLabel("STUD_ID: ");
 		JTextField textl=new JTextField(10);
 		JButton b1= new JButton("Login");
-		JTextArea jta = new JTextArea();
+		
 		JPanel p=new JPanel(new GridLayout(5,5));
 		 p.add(labell);
 		 p.add(textl);
 		 p.add(b1);
-		 p.add(jta);
+		
 		 f.add(p);
 		 f.setVisible(true);
 		 f.pack();
@@ -88,13 +88,13 @@ public class Server extends JFrame
 		    	 ps.setInt(2, stud_id);
 		         ps.executeUpdate();
 		    	 
-		    	 AreaOfCircle ac = new AreaOfCircle();
+		    	 Client ac = new Client();
 		    	 ac.setTitle("Area of a circle");
 		    	 ac.setVisible(true);
-		         jta.setText("Welcome" + " " + name + " " + surname + " " + ", You are now connected to the Server." + " " + "Please enter the Radius of the Circle");
+		         jta.append("Welcome" + " " + name + " " + surname + " " + ", You are now connected to the Server." + " " + "Please enter the Radius of the Circle \n");
 		     } else {
 		         // Display to the text area
-		         jta.setText("Sorry" + " " + id + "." + " " + "You are not a registered student. Try again or Exit");
+		         jta.append("Sorry" + " " + id + "." + " " + "You are not a registered student. Try again or Exit \n");
 		     }
 			 } catch (SQLException e) {
 			 //TODO Auto-generated catch block
@@ -110,7 +110,7 @@ public class Server extends JFrame
 				// socket object to receive incoming client requests 
 				s = ss.accept(); 
 				
-				jta.append("A new client is connected : " + s + "\n"); 
+				jta.setText("A new client is connected : " + s + "\n"); 
 				InetAddress inetAddress = s.getInetAddress();
 				// obtaining input and out streams 
 				DataInputStream dis = new DataInputStream(s.getInputStream()); 
