@@ -10,8 +10,8 @@ public class Client extends JFrame {
 
   // Text area to display contents
   private JTextArea jta = new JTextArea();
-  private JButton jb = new JButton("Send");
-  private JButton jb1 = new JButton("Exit");
+  private JButton sendb = new JButton("Send");
+  private JButton exitb = new JButton("Exit");
   // IO streams
   private DataOutputStream toServer;
   private DataInputStream fromServer;
@@ -25,8 +25,8 @@ public class Client extends JFrame {
     JPanel p = new JPanel();
     p.setLayout(new BorderLayout());
     p.add(new JLabel("Enter radius"), BorderLayout.WEST);
-    p.add(jb, BorderLayout.WEST);
-    p.add(jb1, BorderLayout.EAST);
+    p.add(sendb, BorderLayout.WEST);
+    p.add(exitb, BorderLayout.EAST);
     p.add(jtf, BorderLayout.CENTER);
     jtf.setHorizontalAlignment(JTextField.RIGHT);
 
@@ -34,7 +34,7 @@ public class Client extends JFrame {
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(jta), BorderLayout.CENTER);
 
-    jb.addActionListener(new Listener()); // Register listener
+    sendb.addActionListener(new Listener()); // Register listener
 
     setTitle("Client");
     setSize(500, 300);
@@ -48,7 +48,7 @@ public class Client extends JFrame {
         }
     };
     
-    jb1.addActionListener(ExitListener); // Register exit listener
+    exitb.addActionListener(ExitListener); // Register exit listener
     
     try {
       // Create a socket to connect to the server

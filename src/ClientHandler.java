@@ -6,7 +6,7 @@ import java.net.Socket;
 
 import javax.swing.JTextArea;
 
-class StudentHandler extends Thread {
+class ClientHandler extends Thread {
 // Text area for displaying contents
 private JTextArea jta = new JTextArea();
 //The socket the client is connected through
@@ -19,7 +19,7 @@ private DataOutputStream outputToClient;
 // The Constructor for the client
 
 // Constructor 
-public StudentHandler(Socket s, DataInputStream dis, DataOutputStream dos) 
+public ClientHandler(Socket s, DataInputStream dis, DataOutputStream dos) 
 { 
 	this.socket = s; 
 	this.inputFromClient = dis; 

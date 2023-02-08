@@ -48,30 +48,36 @@ public class Server extends JFrame
 			 con = DriverManager.getConnection("jdbc:mysql://localhost:3306/assign1", "root", "");
 			 st=con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			 rs=st.executeQuery("select * from students");
-			 }catch(Exception e){}
+			 jta.append("Successfully connected to the database \n");
+			 }catch(Exception e){
+				 e.printStackTrace();
+				 jta.append("Failed to connect to the database \n");
+			 }
 		new Server();
-		// server is listening on port 5056 
+		// server is listening on port 8000
 		ServerSocket ss = new ServerSocket(8000); 
-		
-		// running infinite loop for getting 
-		// client request 
+	
+		//Login panel
 		JFrame f=new JFrame();
 		JLabel labell = new JLabel("STUD_ID: ");
 		JTextField textl=new JTextField(10);
 		JButton b1= new JButton("Login");
 		JButton b2= new JButton("Exit");
+		JTextArea jtaLogin = new JTextArea();
 		
 		JPanel p=new JPanel(new GridLayout(5,5));
 		 p.add(labell);
 		 p.add(textl);
 		 p.add(b1);
 		 p.add(b2);
+		 p.add(jtaLogin);
 		
 		 f.add(p);
 		 f.setVisible(true);
 		 f.pack();
-		 f.setSize(500, 300);
+		 f.setSize(650, 300);
 		 
+		 //ExitListener
 		   ActionListener ExitListener = new ActionListener() {
 		        @Override
 		        public void actionPerformed(ActionEvent e) {
@@ -81,6 +87,7 @@ public class Server extends JFrame
 		    
 		 b2.addActionListener(ExitListener); // Register exit listener
 		    
+		 //Login button
 		 b1.addActionListener(new ActionListener() {
 			 public void actionPerformed(ActionEvent arg0) {
 			 try {
@@ -90,9 +97,12 @@ public class Server extends JFrame
 			 pstmt.setString(1, id);
 			 ResultSet rs = pstmt.executeQuery();
 		     if (rs.next()) {
+		    	 //Get logged in user details
 		    	 stud_id = rs.getInt("STUD_ID");
 		    	 name=rs.getString("FNAME");
 		    	 surname=rs.getString("SNAME");
+		    	 
+		    	 //Increment total requests variable for the user after log in
 		    	 tot_req=rs.getInt("TOT_REQ");
 		    	 tot_req++;
 		    	 String query = "UPDATE students SET TOT_REQ=? WHERE STUD_ID=?";
@@ -101,21 +111,25 @@ public class Server extends JFrame
 		    	 ps.setInt(2, stud_id);
 		         ps.executeUpdate();
 		    	 
+		         //On successful login open a new client which contains the area of a circle page
 		    	 Client ac = new Client();
 		    	 ac.setTitle("Area of a circle");
 		    	 ac.setVisible(true);
+		    	 
+		    	 //Display to the text area
+		         jtaLogin.append("Welcome" + " " + name + " " + surname + " " + ", You are now connected to the Server." + " " + "Please enter the Radius of the Circle \n");
 		         jta.append("Welcome" + " " + name + " " + surname + " " + ", You are now connected to the Server." + " " + "Please enter the Radius of the Circle \n");
 		     } else {
 		         // Display to the text area
-		         jta.append("Sorry" + " " + id + "." + " " + "You are not a registered student. Try again or Exit \n");
+		         jtaLogin.append("Sorry" + " " + id + "." + " " + "You are not a registered student. Try again or Exit \n");
 		     }
 			 } catch (SQLException e) {
 			 //TODO Auto-generated catch block
 			 e.printStackTrace();
 			 }}});
-		while (true) 
-			
-		{ 
+		 
+	
+			// socket object to receive incoming client requests 
 			Socket s = null; 
 			
 			try
@@ -125,6 +139,7 @@ public class Server extends JFrame
 				
 				jta.setText("A new client is connected : " + s + "\n"); 
 				InetAddress inetAddress = s.getInetAddress();
+				
 				// obtaining input and out streams 
 				DataInputStream dis = new DataInputStream(s.getInputStream()); 
 				DataOutputStream dos = new DataOutputStream(s.getOutputStream()); 
@@ -133,31 +148,26 @@ public class Server extends JFrame
 				jta.append("Client's host name is " + inetAddress.getHostName() + "\n");
 				jta.append("Client's host address is " + inetAddress.getHostAddress() + "\n");
 				// create a new thread object 
-				Thread t = new StudentHandler(s, dis, dos); 
+				Thread t = new ClientHandler(s, dis, dos); 
 				  
 				// Invoking the start() method 
-				t.start(); 
-				
+				t.start(); 	
 			} 
 			catch (Exception e){ 
 				s.close(); 
 				e.printStackTrace(); 
 			} 
 		} 
-	} 
+	
+	
 	public Server() {
 	    // Place text area on the frame
 	    setLayout(new BorderLayout());
 	    add(new JScrollPane(jta), BorderLayout.CENTER);
 	    setTitle("Server");
-	    setSize(500, 300);
+	    setSize(650, 300);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setVisible(true); // It is necessary to show the frame here!
-	    
-	    jta.append("Server started at " + new Date() + '\n');
-	    
-	    
+	    jta.append("Server started at " + new Date() + '\n');    
 	}
-	
-
 } 
