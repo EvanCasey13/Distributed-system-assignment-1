@@ -40,7 +40,7 @@ public class Client extends JFrame {
     setSize(500, 300);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setVisible(true); // It is necessary to show the frame here!
-
+    
     ActionListener ExitListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -49,7 +49,7 @@ public class Client extends JFrame {
     };
     
     exitb.addActionListener(ExitListener); // Register exit listener
-    
+
     try {
       // Create a socket to connect to the server
       Socket socket = new Socket("localhost", 8000);
